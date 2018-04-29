@@ -1,22 +1,13 @@
----
-title: "Product Range Analysis"
-author: "Mark Culp"
-date: "April 27, 2018"
-output: html_document
----
 
-```{r setup, include=FALSE, message=FALSE}
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+# ========================
+# Product Range Management
+# Product-Range-Management.xlsx
+# ========================
 
 # Load libraries
 library(dplyr)
 library(readxl)
 library(ggplot2)
-
-```
-
-
-```{r loadDS, echo=FALSE}
 
 # ----------------------------------
 # Product Range Performance (prp)
@@ -32,12 +23,6 @@ h1 <- colnames(prp) %>%
 names(prp) <- gsub("\\.\\.","\\.",h1)
 rm(h1)
 prp <- rename(prp, Category = X__1)
-
-```
-
-#### Category Space Management
-
-```{r rangeAnyl, echo=FALSE}
 
 # ----------------------------------
 # Category Space (catSpace) from
@@ -85,7 +70,7 @@ ggplot(salesByCat, aes(x = Category, y = Sales )) +
 salesDens <- salesByCat[,2] / catSpace[,2] * 1000
 salesDens <-  cbind(salesByCat[,1], salesDens[,1]) %>%
   rename(Sales_Density = 'salesDens[, 1]')
-  
+
 # Plot sales density by category
 ggplot(salesDens, aes(x = Category, y = Sales_Density )) +
   geom_bar(stat = "identity") +
@@ -137,7 +122,7 @@ marginContrib <- salesByCat[,2] * margins[,2]
 
 # Calculate each category's % of 
 # current total contibuted margin
-marginContribPcnt <- round(marginContrib[,1] / sum(marginContrib[,1]),3)
+marginContribPcnt <- round(marginContrib[,1] / sum(marginContrib[,1]),2)
 
 # Combine as one tibble
 marginContrib <- as_tibble(cbind(margins[,1],marginContrib))
@@ -179,27 +164,6 @@ ggplot(margin2space, aes(x = Category, y = OverUnder, fill = Color)) +
   scale_fill_manual(values=c(positive="skyblue",negative="pink")) +
   geom_text(aes(label=OverUnder)) +
   ggtitle("Over/Under Performing \n Product Space Allocations \n by Category (percent)")
-
-
-
-```
-
-### Appendix
-
-#### Load libraries
-
-```{r setup2, ref.label='setup', eval=FALSE}
-```
-
-#### Load datasets/worksheets
-
-```{r loadDS2, ref.label='loadDS', eval = FALSE}
-```
-
-
-
-
-
 
 
 
