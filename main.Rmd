@@ -1,12 +1,9 @@
 ---
-title: "Retail for Business Analysts"
+title: "Product Range Analysis"
 author: "Mark Culp"
 date: "April 27, 2018"
 output: html_document
 ---
-
-
-
 
 ```{r setup, include=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
@@ -18,9 +15,8 @@ library(ggplot2)
 
 ```
 
-#### Load datasets/worksheets
 
-```{r}
+```{r loadDS, echo=FALSE}
 
 # ----------------------------------
 # Product Range Performance (prp)
@@ -39,9 +35,9 @@ prp <- rename(prp, Category = X__1)
 
 ```
 
-#### Product Range Analysis
+#### Category Space Management
 
-```{r rangeAnyl}
+```{r rangeAnyl, echo=FALSE}
 
 # ----------------------------------
 # Category Space (catSpace) from
@@ -125,5 +121,23 @@ ggplot(marginDens, aes(x = Category, y = Margin_Density )) +
 
 
 ```
+
+### Appendix
+
+#### Load libraries
+
+```{r setup2, ref.label='setup', eval=FALSE}
+```
+
+#### Load datasets/worksheets
+
+```{r loadDS2, ref.label='loadDS', eval = FALSE}
+```
+
+
+
+
+
+
 
 
