@@ -5,8 +5,9 @@ date: "April 27, 2018"
 output: html_document
 ---
 
+
 ```{r setup, include=FALSE, message=FALSE}
-knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE, fig.width = 6, fig.asp = 0.618)
 
 # Load libraries
 library(dplyr)
@@ -35,9 +36,11 @@ prp <- rename(prp, Category = X__1)
 
 ```
 
-#### Category Space Management
+####Product Range Management
 
-```{r rangeAnyl, echo=FALSE}
+Product range management is a key component of successful retail management.  It helps the retailer identify an appropriate product mix and allocate shelf space to the most efficient products.   
+
+```{r prp, echo=FALSE, out.width="50%"}
 
 # ----------------------------------
 # Category Space (catSpace) from
@@ -56,9 +59,10 @@ catSpace <- as_tibble(cbind(catSpace,catSpacePrcnt[,1])) %>%
   rename(SpacePrcnt='catSpacePrcnt[, 1]')
 
 # Plot category space totals
-ggplot(catSpace, aes(x = Category, y = Space )) +
+ggplot(catSpace, aes(x = Category, y = Space, fill = Category )) +
   geom_bar(stat = "identity") +
-  ggtitle("Category Space Totals \n (all stores, square meters)")
+  ggtitle("Category Space Totals \n (all stores, square meters)") +
+  theme(legend.position="none")
 
 # ----------------------------------
 # Sales by Category (salesByCat) from
@@ -71,9 +75,19 @@ salesByCat <- prp[1:6,c(1,3)] %>%
   rename(Sales = Sales.generated.In.thousands.of.USD)
 
 # Plot sales totals by category
-ggplot(salesByCat, aes(x = Category, y = Sales )) +
+ggplot(salesByCat, aes(x = Category, y = Sales, fill=Category)) +
   geom_bar(stat = "identity") +
-  ggtitle("Sales by Category \n (all stores, USD in thousands)")
+  ggtitle("Sales by Category \n (all stores, USD in thousands)") +
+  theme(legend.position="none")
+
+
+```
+
+####Key Performance Indicators (KPI's)
+
+There are two main KPI's for measuring efficient use of retail space, Sales Density and Margin Density.  
+
+```{r kpi, echo=FALSE, out.width="50%"}
 
 # ----------------------------------
 # Sales Density (salesDens) 
@@ -87,9 +101,10 @@ salesDens <-  cbind(salesByCat[,1], salesDens[,1]) %>%
   rename(Sales_Density = 'salesDens[, 1]')
   
 # Plot sales density by category
-ggplot(salesDens, aes(x = Category, y = Sales_Density )) +
+ggplot(salesDens, aes(x = Category, y = Sales_Density, fill=Category )) +
   geom_bar(stat = "identity") +
-  ggtitle("Sales Density by Category \n    (USD per sq meter)")
+  ggtitle("Sales Density by Category \n    (USD per sq meter)") + 
+  theme(legend.position="none")
 
 # ----------------------------------
 # Sales Margin (margins) 
@@ -100,11 +115,6 @@ ggplot(salesDens, aes(x = Category, y = Sales_Density )) +
 # Get margin breakdown by category
 margins <- prp[1:6,c(1,5)] %>%
   rename(Margins = X.Margin)
-
-# Plot margins by category
-ggplot(margins, aes(x = Category, y = Margins )) +
-  geom_bar(stat = "identity") +
-  ggtitle("Margins by Category \n      (percent)")
 
 # ----------------------------------
 # Margin Density (marginDens) 
@@ -121,9 +131,17 @@ marginDens <- as_tibble(cbind(salesDens[,1], marginDens[,1])) %>%
   rename(Category = V1, Margin_Density = V2)
 
 # Plot margin density by category
-ggplot(marginDens, aes(x = Category, y = Margin_Density )) +
+ggplot(marginDens, aes(x = Category, y = Margin_Density, fill=Category )) +
   geom_bar(stat = "identity") +
-  ggtitle("Margin Density by Category \n    (USD per sq meter)")
+  ggtitle("Margin Density by Category \n    (USD per sq meter)") +
+  theme(legend.position="none")
+
+
+```
+
+#### Category Space Management
+
+```{r rangeAnyl, echo=FALSE, fig.align="center"}
 
 # ----------------------------------
 # Margin Contributed (marginContrib) 
@@ -144,11 +162,6 @@ marginContrib <- as_tibble(cbind(margins[,1],marginContrib))
 marginContrib <- as_tibble(cbind(marginContrib,marginContribPcnt)) 
 colnames(marginContrib) <- c("Category","CurMargin","CurPercent")
 rm(marginContribPcnt)
-
-# Plot margins contributed from current sales by category
-ggplot(marginContrib, aes(x = Category, y = CurMargin )) +
-  geom_bar(stat = "identity") +
-  ggtitle("Margins Contributed \n from Current Sales \n by Category (USD thousands)")
 
 # ----------------------------------
 # Compare Contributed Margins to 
