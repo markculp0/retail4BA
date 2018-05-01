@@ -39,6 +39,7 @@ catSpacePrcnt <- round(catSpace[,2] / sum(catSpace[,2]),2)
 # Combine in tibble
 catSpace <- as_tibble(cbind(catSpace,catSpacePrcnt[,1])) %>%
   rename(SpacePrcnt='catSpacePrcnt[, 1]')
+rm(catSpacePrcnt)
 
 # Plot category space totals
 ggplot(catSpace, aes(x = Category, y = Space )) +
@@ -165,5 +166,42 @@ ggplot(margin2space, aes(x = Category, y = OverUnder, fill = Color)) +
   geom_text(aes(label=OverUnder)) +
   ggtitle("Over/Under Performing \n Product Space Allocations \n by Category (percent)")
 
+# ----------------------------------
+# Calculate Recommended
+# Space Reallocation
+# (newSpace) by product category 
+# from Product-Range-Management.xlsx
+# ----------------------------------
 
+# Calculate new space allocation based on performance
+newSpace <- catSpace$Space * margin2space$MarginVsSpace
 
+# Rounding adjustments
+newSpace[1] <- newSpace[1] + 1
+newSpace[3] <- newSpace[3] - 0.5
+newSpace[6] <- newSpace[6] + 2
+sum(newSpace)
+
+# Calc new space allocation percentages
+newSpacePrct <- round(newSpace / 1250, 2)
+
+# Combine as tibble
+newSpace <- as_tibble(cbind(prp[1:6,1],newSpace))
+newSpace <- as_tibble(cbind(newSpace, newSpacePrct))
+colnames(newSpace) <- c("Category", "NewSpace", "NewSpacePrct")
+rm(newSpacePrct)
+
+# ----------------------------------
+# Calculate Potential Margin
+# Generated using new
+# Space Reallocation
+# (newMarginContrib) by product category 
+# from Product-Range-Management.xlsx
+# ----------------------------------
+
+# Convert to double 
+marginDens$Margin_Density <- as.double(marginDens$Margin_Density)
+
+# Calc new potential margin generated
+newMargin <- round((newSpace$NewSpace * marginDens[,2]) / 1000)
+colnames(newMargin) <- "NewMargin"

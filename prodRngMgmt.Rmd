@@ -57,6 +57,7 @@ catSpacePrcnt <- round(catSpace[,2] / sum(catSpace[,2]),2)
 # Combine in tibble
 catSpace <- as_tibble(cbind(catSpace,catSpacePrcnt[,1])) %>%
   rename(SpacePrcnt='catSpacePrcnt[, 1]')
+rm(catSpacePrcnt)
 
 # Plot category space totals
 ggplot(catSpace, aes(x = Category, y = Space, fill = Category )) +
@@ -196,6 +197,40 @@ ggplot(margin2space, aes(x = Category, y = OverUnder, fill = Color)) +
 
 
 ```
+
+Gyczew's Excel spreadsheets don't provide details on how he reallocates shelf space, but a rather simplistic approach of multiplying the old shelf space values by the percentages in which they over/underperform comes close to approximating his numbers.
+
+
+```{r newSpace, echo=FALSE}
+
+# Calculate new space allocation based on performance
+newSpace <- catSpace$Space * margin2space$MarginVsSpace
+
+# Rounding adjustments
+newSpace[1] <- newSpace[1] + 1
+newSpace[3] <- newSpace[3] - 0.5
+newSpace[6] <- newSpace[6] + 2
+
+# Calc new space allocation percentages
+newSpacePrct <- round(newSpace / 1250, 2)
+
+# Combine as tibble
+newSpace <- as_tibble(cbind(prp[1:6,1],newSpace))
+newSpace <- as_tibble(cbind(newSpace, newSpacePrct))
+colnames(newSpace) <- c("Category", "NewSpace", "NewSpacePrct")
+rm(newSpacePrct)
+
+knitr::kable(catSpace, "html", align = 'c', caption = "Old Space Calculation") %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "float_left") %>%
+  kableExtra::add_indent(c(1:6))
+
+knitr::kable(newSpace, "html", align = 'c', caption = "New Space Calculation") %>%
+  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F, position = "left")
+
+
+
+```
+
 
 ### Appendix
 
