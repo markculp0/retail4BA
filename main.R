@@ -17,7 +17,7 @@ library(ggplot2)
 # ----------------------------------
 
 # Read in Store Size ('General info') worksheet
-ss <- read_xlsx("Analysis-by-cohorts-vintage-example.xlsx", sheet = "General info", skip = 2)
+ss <- read_xlsx("xlsx_retail4BA/Analysis-by-cohorts-vintage-example.xlsx", sheet = "General info", skip = 2)
 
 # Create valid column names for 'Store Size' table
 h1 <- colnames(ss) %>%
@@ -30,7 +30,7 @@ rm(h1)
 # ----------------------------------
 
 # Read in 'Sales by Store' worksheet
-sbs <- read_xlsx("Analysis-by-cohorts-vintage-example.xlsx", sheet = "Sales by Store", skip = 2)
+sbs <- read_xlsx("xlsx_retail4BA/Analysis-by-cohorts-vintage-example.xlsx", sheet = "Sales by Store", skip = 2)
 
 # Create valid column names for 'Sales by Store' table
 h1 <- colnames(sbs) %>%
@@ -43,14 +43,14 @@ rm(h1)
 # ----------------------------------
 
 # Read in 'FootFall' worksheet
-ff <- read_xlsx("Analysis-by-cohorts-vintage-example.xlsx", sheet = "FootFall", skip = 2)
+ff <- read_xlsx("xlsx_retail4BA/Analysis-by-cohorts-vintage-example.xlsx", sheet = "FootFall", skip = 2)
 
 # ----------------------------------
 # Year of opening (yoo)
 # ----------------------------------
 
 # Read in 'Year of opening' worksheet
-yoo <- read_xlsx("Analysis-by-cohorts-vintage-example.xlsx", sheet = "Year of opening", skip = 2)
+yoo <- read_xlsx("xlsx_retail4BA/Analysis-by-cohorts-vintage-example.xlsx", sheet = "Year of opening", skip = 2)
 
 
 # ----------------------------------

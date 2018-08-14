@@ -24,7 +24,7 @@ library(ggplot2)
 # ----------------------------------
 
 # Read in 'Product Range Performance worksheet
-prp <- read_xlsx("Product-Range-Management.xlsx", sheet = "Basic Option", skip = 2)
+prp <- read_xlsx("xlsx_retail4BA/Product-Range-Management.xlsx", sheet = "Basic Option", skip = 2)
 
 # Create valid column names for 'Product Range 
 # Performance' table
